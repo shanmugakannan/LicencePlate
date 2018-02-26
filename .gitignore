@@ -97,3 +97,8 @@ ENV/
 
 # mypy
 .mypy_cache/
+*.jpg
+*.png
+*.docx
+*.pdf
+object-detection/cmd.txt
