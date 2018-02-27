@@ -12,12 +12,11 @@ import numpy as np
 import argparse
 import imutils
 import time
-
+import random
 
 # construct the argument parse and parse the arguments
 ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--image", required=True,
-	help="path to input image")
+
 ap.add_argument("-p", "--prototxt", required=True,
 	help="path to Caffe 'deploy' prototxt file")
 ap.add_argument("-m", "--model", required=True,
@@ -60,7 +59,7 @@ while True:
 
 	# pass the blob through the network and obtain the detections and
 	# predictions
-	print("[INFO] computing object detections...")
+	#print("[INFO] computing object detections...")
 	net.setInput(blob)
 	detections = net.forward()
 
@@ -82,24 +81,24 @@ while True:
 
 			# display the prediction
 			label = "{}: {:.2f}%".format(CLASSES[idx], confidence * 100)
-			print("[INFO] {}".format(label))
-			cv2.rectangle(frame, (startX, startY), (endX, endY),
-				COLORS[idx], 2)
-			y = startY - 15 if startY - 15 > 15 else startY + 15
-			cv2.putText(frame, label, (startX, y),
-				cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
-			# show the output frame
-			cv2.imshow("Frame", frame)
-			key = cv2.waitKey(1) & 0xFF
-# if the `q` key was pressed, break from the loop
-			if key == ord("q"):
-				break
-# update the FPS counter
-			fps.update()
-			# stop the timer and display FPS information
-			fps.stop()
-			print("[INFO] elapsed time: {:.2f}".format(fps.elapsed()))
-			print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
+			 
+			if(CLASSES[idx]!="car"):
+				print("[INFO] {}".format(label))
+				#cv2.rectangle(frame, (startX, startY), (endX, endY),
+				#	COLORS[idx], 2)
+				#y = startY - 15 if startY - 15 > 15 else startY + 15
+				#cv2.putText(frame, label, (startX, y),
+				#	cv2.FONT_HERSHEY_SIMPLEX, 0.5, COLORS[idx], 2)
+				# show the output frame
+				#cv2.imshow("Frame", frame)
+				cv2.imwrite("frame%d.jpg" % random.randint(1, 100), frame)
+				 
+	# update the FPS counter
+				fps.update()
+				# stop the timer and display FPS information
+				fps.stop()
+				print("[INFO] elapsed time: {:.2f}".format(fps.elapsed()))
+				print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 			
 			# do a bit of cleanup
 cv2.destroyAllWindows()
